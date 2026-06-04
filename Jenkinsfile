@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    triggers {
+        pollSCM('*/1 * * * *')
+    }
+
     tools {
         maven 'Maven-3.9.16'
     }
@@ -26,24 +30,19 @@ pipeline {
         }
 
         stage('Deploy') {
-            when {
-                expression {
-                    currentBuild.currentResult == 'SUCCESS'
-                }
-            }
             steps {
-                echo 'Build Success - Deploying Application'
+                echo 'Application Deployed Successfully'
             }
         }
     }
 
     post {
         success {
-            echo 'Deployment Successful'
+            echo 'Pipeline Success'
         }
 
         failure {
-            echo 'Build Failed - Deployment Cancelled'
+            echo 'Pipeline Failed'
         }
     }
 }
